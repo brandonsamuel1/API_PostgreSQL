@@ -67,17 +67,6 @@ app.post('/api/courses', (req, res) => {
     });
 });
 
-// DELETE A SPECIFIC COURSE
-app.delete('/api/courses/:courseTitle', (req, res) => {
-    const title = req.params.courseTitle;
-
-    sequelize.query('DELETE FROM course WHERE title = ?', {
-        replacements: [title], type: sequelize.QueryTypes.SELECT
-    }).then(() => {
-        res.send('Successfully deleted course')
-    });
-});
-
 // UPDATE A SPECIFIC COURSE
 app.patch('/api/courses/:courseTitle', (req, res) => {
     const title = req.params.courseTitle;
@@ -90,6 +79,24 @@ app.patch('/api/courses/:courseTitle', (req, res) => {
         res.send('Successfully updated course')
     });
 });
+
+// DELETE A SPECIFIC COURSE
+app.delete('/api/courses/:courseTitle', (req, res) => {
+    const title = req.params.courseTitle;
+
+    sequelize.query('DELETE FROM course WHERE title = ?', {
+        replacements: [title], type: sequelize.QueryTypes.SELECT
+    }).then(() => {
+        res.send('Successfully deleted course')
+    });
+});
+
+// DELETE ALL COURSES
+app.delete('/api/courses', (req, res) => {
+    sequelize.query('DELETE FROM course').then(() => { res.send('Succesfully deleted all courses') })
+});
+
+
 
 app.listen(8080, (req, res) => {
     console.log('Server started on port 8080...');
