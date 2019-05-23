@@ -21,15 +21,14 @@ const Courses = sequelize.define('course', {
     description: {
       type: Sequelize.STRING
     }
-  });
+});
   
-  // TEST DB CONNECTION
-  sequelize.authenticate().then(() => {
+// TEST DB CONNECTION
+sequelize.authenticate().then(() => {
     console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
+}).catch(err => {
     console.error('Unable to connect to the database:', err);
-  });
+});
 
 
 
@@ -43,6 +42,18 @@ app.get('/api/courses', (req, res) => {
         res.send(courses);
     });
 });
+
+// GET A SPECIFIC COURSE
+app.get('/api/courses/:id', (req, res) => {
+    const id = req.params.id;
+
+    sequelize.query('SELECT * FROM course WHERE id = ?', {
+        replacements: [id], type: sequelize.QueryTypes.SELECT
+    }).then(course => {
+        res.send(course)
+    });
+});
+
 
 app.listen(8080, (req, res) => {
     console.log('Server started on port 8080...');
