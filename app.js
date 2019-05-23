@@ -78,6 +78,19 @@ app.delete('/api/courses/:courseTitle', (req, res) => {
     });
 });
 
+// UPDATE A SPECIFIC COURSE
+app.patch('/api/courses/:courseTitle', (req, res) => {
+    const title = req.params.courseTitle;
+    const updatedTitle = req.body.title;
+    const updatedDesc = req.body.description;
+
+    sequelize.query('UPDATE course SET title = ?, description = ? WHERE title = ?', {
+        replacements: [updatedTitle, updatedDesc, title], type: sequelize.QueryTypes.SELECT
+    }).then(() => {
+        res.send('Successfully updated course')
+    });
+});
+
 app.listen(8080, (req, res) => {
     console.log('Server started on port 8080...');
 });
