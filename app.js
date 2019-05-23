@@ -61,8 +61,19 @@ app.post('/api/courses', (req, res) => {
 
     sequelize.query('INSERT INTO course (title, description) VALUES ($1, $2)', 
     { bind: [title, description], type: sequelize.QueryTypes.SELECT}
-    ).then(newCourse => {
+    ).then(() => {
         res.send('Successfuly added course')
+    });
+});
+
+// DELETE A SPECIFIC COURSE
+app.delete('/api/courses/:id', (req, res) => {
+    const id = req.params.id;
+
+    sequelize.query('DELETE FROM course WHERE id = ?', {
+        replacements: [id], type: sequelize.QueryTypes.SELECT
+    }).then(() => {
+        res.send('Successfully deleted course')
     });
 });
 
