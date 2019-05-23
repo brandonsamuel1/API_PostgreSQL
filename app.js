@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
+const _ = require('lodash');
 
 const app = express();
 
@@ -44,11 +45,11 @@ app.get('/api/courses', (req, res) => {
 });
 
 // GET A SPECIFIC COURSE
-app.get('/api/courses/:id', (req, res) => {
-    const id = req.params.id;
+app.get('/api/courses/:courseTitle', (req, res) => {
+    const title = req.params.courseTitle;
 
-    sequelize.query('SELECT * FROM course WHERE id = ?', {
-        replacements: [id], type: sequelize.QueryTypes.SELECT
+    sequelize.query('SELECT * FROM course WHERE title = ?', {
+        replacements: [title], type: sequelize.QueryTypes.SELECT
     }).then(course => {
         res.send(course)
     });
@@ -67,11 +68,11 @@ app.post('/api/courses', (req, res) => {
 });
 
 // DELETE A SPECIFIC COURSE
-app.delete('/api/courses/:id', (req, res) => {
-    const id = req.params.id;
+app.delete('/api/courses/:courseTitle', (req, res) => {
+    const title = req.params.courseTitle;
 
-    sequelize.query('DELETE FROM course WHERE id = ?', {
-        replacements: [id], type: sequelize.QueryTypes.SELECT
+    sequelize.query('DELETE FROM course WHERE title = ?', {
+        replacements: [title], type: sequelize.QueryTypes.SELECT
     }).then(() => {
         res.send('Successfully deleted course')
     });
