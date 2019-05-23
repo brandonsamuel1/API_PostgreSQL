@@ -54,6 +54,17 @@ app.get('/api/courses/:id', (req, res) => {
     });
 });
 
+//ADD A NEW COURSE
+app.post('/api/courses', (req, res) => {
+    const title = req.body.title;
+    const description = req.body.description;
+
+    sequelize.query('INSERT INTO course (title, description) VALUES ($1, $2)', 
+    { bind: [title, description], type: sequelize.QueryTypes.SELECT}
+    ).then(newCourse => {
+        res.send('Successfuly added course')
+    });
+});
 
 app.listen(8080, (req, res) => {
     console.log('Server started on port 8080...');
